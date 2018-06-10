@@ -1,0 +1,14 @@
+{
+  "name": "ugh",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "cat www/js/*.js | eslint --stdin"
+  },
+  "author": "patwork@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.19.1"
+  }
+}
