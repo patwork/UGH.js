@@ -5,11 +5,14 @@ const PLAYER_HEIGHT = 64;
 const PLAYER_HALF_WIDTH = PLAYER_WIDTH / 2;
 const PLAYER_HALF_HEIGHT = PLAYER_HEIGHT / 2;
 
-const PLAYER_FORCE_VERTICAL = 0.3;
+const PLAYER_FORCE_VERTICAL = 0.2;
 const PLAYER_FORCE_HORIZONTAL = 0.15;
 
 const PLAYER_FRICTION_VERTICAL = 0.98;
 const PLAYER_FRICTION_HORIZONTAL = 0.98;
+
+const PLAYER_ANIM_FRAMES = 4;
+const PLAYER_ANIM_SPEED = 5;
 
 class Player {
 
@@ -21,6 +24,8 @@ class Player {
 		this.acceleration = new Vector();
 		this.temp = new Vector();
 		this.data = DATA.player;
+		this.animFrame = 0;
+		this.animSpeed = PLAYER_ANIM_SPEED;
 	}
 
 	// -----------------------------------------------------
@@ -29,6 +34,11 @@ class Player {
 		// akceleracja
 		this.acceleration.zero();
 		this.updateKeyboard(key);
+
+		if (this.acceleration.x != 0 || this.acceleration.y < 0) {
+			this.updateAnimation();
+		}
+
 		this.acceleration.addXY(0, GAME_FORCE_GRAVITY);
 
 		if (this.position.y > map.getWaterY()) {
@@ -95,8 +105,22 @@ class Player {
 	}
 
 	// -----------------------------------------------------
+	updateAnimation() {
+		this.animSpeed -= 1;
+		if (this.animSpeed < 0) {
+			this.animSpeed = PLAYER_ANIM_SPEED;
+			this.animFrame = (this.animFrame + 1) % PLAYER_ANIM_FRAMES;
+		}
+	}
+
+	// -----------------------------------------------------
 	render() {
-		this.context.drawImage(this.data.image, this.position.x - PLAYER_HALF_WIDTH, this.position.y - PLAYER_HALF_HEIGHT);
+		this.context.drawImage(this.data.image,
+			this.animFrame * PLAYER_WIDTH, 0,
+			PLAYER_WIDTH, PLAYER_HEIGHT,
+			this.position.x - PLAYER_HALF_WIDTH, this.position.y - PLAYER_HALF_HEIGHT,
+			PLAYER_WIDTH, PLAYER_HEIGHT
+		);
 	}
 
 	// -----------------------------------------------------
