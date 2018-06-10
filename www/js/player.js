@@ -52,19 +52,19 @@ class Player {
 	updateKeyboard(key) {
 
 		if (key.isPressed(KEY_LEFT)) {
-			this.velocity.subXY(PLAYER_FORCE_HORIZONTAL, 0);
+			this.acceleration.subXY(PLAYER_FORCE_HORIZONTAL, 0);
 		}
 
 		if (key.isPressed(KEY_RIGHT)) {
-			this.velocity.addXY(PLAYER_FORCE_HORIZONTAL, 0);
+			this.acceleration.addXY(PLAYER_FORCE_HORIZONTAL, 0);
 		}
 
 		if (key.isPressed(KEY_UP)) {
-			this.velocity.subXY(0, PLAYER_FORCE_VERTICAL);
+			this.acceleration.subXY(0, PLAYER_FORCE_VERTICAL);
 		}
 
 		if (key.isPressed(KEY_DOWN)) {
-			this.velocity.addXY(0, PLAYER_FORCE_VERTICAL);
+			this.acceleration.addXY(0, PLAYER_FORCE_VERTICAL);
 		}
 
 	}
