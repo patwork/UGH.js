@@ -129,7 +129,8 @@ class Player {
 		this.context.strokeStyle = '#EEEEEE';
 
 		this.context.beginPath();
-		this.context.rect(this.position.x - PLAYER_HALF_WIDTH, this.position.y - PLAYER_HALF_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+		this.context.rect(this.position.x - PLAYER_HALF_WIDTH, this.position.y - PLAYER_HALF_HEIGHT,
+			PLAYER_WIDTH, PLAYER_HEIGHT);
 		this.context.stroke();
 	}
 
