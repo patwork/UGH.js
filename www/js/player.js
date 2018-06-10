@@ -8,6 +8,9 @@ const PLAYER_HALF_HEIGHT = PLAYER_HEIGHT / 2;
 const PLAYER_FORCE_VERTICAL = 0.2;
 const PLAYER_FORCE_HORIZONTAL = 0.15;
 
+const PLAYER_BOUNCE_VERTICAL = 0.7;
+const PLAYER_BOUNCE_HORIZONTAL = 0.7;
+
 const PLAYER_FRICTION_VERTICAL = 0.98;
 const PLAYER_FRICTION_HORIZONTAL = 0.98;
 
@@ -53,8 +56,7 @@ class Player {
 		this.temp.set(this.position);
 		this.position.add(this.velocity);
 		this.outOfScreen();
-
-		// TODO sprawdzic kolizje etc
+		this.collisionsWithMap(map, this.temp);
 
 	}
 
@@ -100,6 +102,43 @@ class Player {
 		if (this.position.y > GAME_SCREEN_HEIGHT + PLAYER_HEIGHT) {
 			this.velocity.setY(0);
 			this.position.setY(GAME_SCREEN_HEIGHT + PLAYER_HEIGHT);
+		}
+
+	}
+
+	// -----------------------------------------------------
+	collisionsWithMap(map, old) {
+
+		// kolizja z górną ścianką
+		let topCollide = map.collideSide(
+			old.x - PLAYER_HALF_WIDTH, this.position.y - PLAYER_HALF_HEIGHT,
+			old.x + PLAYER_HALF_WIDTH, this.position.y - PLAYER_HALF_HEIGHT);
+
+		// kolizja z dolną ścianką
+		let bottomCollide = map.collideSide(
+			old.x - PLAYER_HALF_WIDTH, this.position.y + PLAYER_HALF_HEIGHT,
+			old.x + PLAYER_HALF_WIDTH, this.position.y + PLAYER_HALF_HEIGHT);
+
+		// kolizja z lewą ścianką
+		let leftCollide = map.collideSide(
+			this.position.x - PLAYER_HALF_WIDTH, old.y - PLAYER_HALF_HEIGHT,
+			this.position.x - PLAYER_HALF_WIDTH, old.y + PLAYER_HALF_HEIGHT);
+
+		// kolizja z prawą ścianką
+		let rightCollide = map.collideSide(
+			this.position.x + PLAYER_HALF_WIDTH, old.y - PLAYER_HALF_HEIGHT,
+			this.position.x + PLAYER_HALF_WIDTH, old.y + PLAYER_HALF_HEIGHT);
+
+		// rozwiązywanie kolizji góra / dół
+		if (topCollide.length || bottomCollide.length) {
+			this.velocity.setY(-(this.velocity.y * PLAYER_BOUNCE_VERTICAL));
+			this.position.setY(old.y);
+		}
+
+		// rozwiązywanie kolizji lewo / prawo
+		if (leftCollide.length || rightCollide.length) {
+			this.velocity.setX(-(this.velocity.x * PLAYER_BOUNCE_HORIZONTAL));
+			this.position.setX(old.x);
 		}
 
 	}
